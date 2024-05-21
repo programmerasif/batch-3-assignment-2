@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { productService } from './product.services';
+import Product from './product.model';
 
 // creat produce
 const creatProduct = async (req: Request, res: Response) => {
@@ -45,8 +46,24 @@ const getAllProduct = async (req: Request, res: Response) => {
     });
   }
 };
+// find my Specific id
+const getSpecificProduct = async (req: Request, res: Response) => {
+  const id = req.params.productId;
+  console.log(id);
+  const result = await productService.getSpecificProductIntoDB(id);
+  res.status(200).json({
+    success: true,
+    message: 'Products fetched successfully!',
+    data: result,
+  });
+};
+// update by specfic id 
 
+const updateSpecificProduct = () =>{
+    
+}
 export const productControlars = {
   creatProduct,
   getAllProduct,
+  getSpecificProduct,
 };

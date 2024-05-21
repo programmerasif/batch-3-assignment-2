@@ -7,5 +7,7 @@ const router = express.Router()
 // will call the controlar function
 router.post('/products', productControlars.creatProduct);
 router.get('/products', productControlars.getAllProduct);
+router.get('/products/:productId', productControlars.getSpecificProduct);
+router.put('/products/:productId', productControlars.updateSpecificProduct);
 
 export const productRoutes = router;
