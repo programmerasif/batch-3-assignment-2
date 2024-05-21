@@ -6,7 +6,11 @@ const creatProductIntoDB = async(product:IProduct) =>{
     const result = await Product.create(product)
     return result
 }
-
+const getAllProductIntoDB = async() =>{
+const result = await Product.find()
+return result
+}
 export const productService = {
-    creatProductIntoDB
+    creatProductIntoDB,
+    getAllProductIntoDB
 }
