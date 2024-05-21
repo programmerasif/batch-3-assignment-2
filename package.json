@@ -1,12 +1,12 @@
 {
-  "name": "my-first-project",
+  "name": "assignment-2",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start:prod": "node ./dist/server.js",
     "build": "tsc",
-    "lint": "npx eslint src --ignore-pattern .ts",
+    "lint": "npx eslint src",
     "init:fix": "npx eslint src --fix",
     "prettier": "prettier --ignore-path .gitignore --write \"./src/**/*.+(js|ts|json)\"",
     "prettier:fix": "npx prettier --write src",
