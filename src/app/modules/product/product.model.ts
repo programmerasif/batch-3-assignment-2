@@ -1,6 +1,6 @@
 // model
 import mongoose, { Schema } from 'mongoose';
-import { IProduct, IProductOrder } from './product.interface';
+import { IProduct} from './product.interface';
 
 const VariantSchema = new Schema({
   type: { type: String, required: true },
@@ -40,33 +40,8 @@ const ProductSchema = new Schema<IProduct>(
   }
 );
 
-//  order schema
-
-const productOrderSchema = new Schema<IProductOrder>({
-  email: {
-    type: String,
-    required: true,
-  },
-  productId: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-},
-{
-  versionKey: false, // Disable the __v field
-},
-);
 
 
 const Product = mongoose.model<IProduct>('Product', ProductSchema);
-const Order = mongoose.model<IProductOrder>('Productorde',productOrderSchema)
 
-export  {Product,Order};
+export default Product;

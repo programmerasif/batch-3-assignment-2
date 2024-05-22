@@ -1,6 +1,7 @@
 // service
-import { IProduct, IProductOrder } from './product.interface';
-import { Order, Product } from './product.model';
+import { IProduct } from './product.interface';
+import Product from './product.model';
+
 
 const creatProductIntoDB = async (product: IProduct) => {
   const result = await Product.create(product);
@@ -47,44 +48,11 @@ const deleteSpecificProductIntoDB = async (productId: string) => {
   return result;
 };
 
-// new order
-const addOrder = async (order: IProductOrder,productId:string) => {
 
-  const product = await Product.findOne({_id : productId})
-  if (!product) {
-    throw new Error("Order not found")
-  }
-
-  if (product.inventory.quantity < order.quantity) {
-    throw new Error("Insufficient quantity available in inventory")
-  }
-// Update the product inventory quantity
-  product.inventory.quantity -= order.quantity;
-
-  if (product.inventory.quantity == 0) {
-    product.inventory.inStock = false
-  }
-  await product.save()
-  const result = await Order.create(order);
-  return result;
-};
-// Retrieve All Orders and
-const retrieveAllOrdersIntoDB = async (email?: string) => {
-  if (email) {
-    const query = { email };
-    const result = await Order.find(query);
-    return result;
-  } else {
-    const result = await Order.find();
-    return result;
-  }
-};
 export const productService = {
   creatProductIntoDB,
   getAllProductIntoDB,
   getSpecificProductIntoDB,
   updateSpecificProductIntoDB,
   deleteSpecificProductIntoDB,
-  addOrder,
-  retrieveAllOrdersIntoDB,
 };
