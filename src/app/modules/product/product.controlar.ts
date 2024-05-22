@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
 import { productService } from './product.services';
-
+import { ProductOrderValidationSchema, ProductValidationSchema, stringValidationSchema } from './product.validation';
 // creat produce
 const creatProduct = async (req: Request, res: Response) => {
   try {
     const product = req.body;
+    const zodPrsedData = ProductValidationSchema.parse(product);
 
     //  here we call the services function
-    const result = await productService.creatProductIntoDB(product);
+    const result = await productService.creatProductIntoDB(zodPrsedData);
 
     // here I am sending response to user
     res.status(200).json({
@@ -48,12 +49,13 @@ const getAllProduct = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    const errMsg = (error as Error).message || 'Unknown error occurred';
+    const errMsg = (error as Error) || 'Unknown error occurred';
     // sending error response
+
     res.status(500).json({
       success: false,
       message: 'An error occurred while creating the Product',
-      error: errMsg,
+      error: errMsg.message,
     });
   }
 };
@@ -71,9 +73,10 @@ const getSpecificProduct = async (req: Request, res: Response) => {
 const updateSpecificProduct = async (req: Request, res: Response) => {
   const id = req.params.productId;
   const newProduct = req.body;
+  const zodPrsedData = ProductValidationSchema.parse(newProduct);
   const result = await productService.updateSpecificProductIntoDB(
     id,
-    newProduct,
+    zodPrsedData,
   );
   res.status(200).json({
     success: true,
@@ -103,7 +106,8 @@ const deleteSpecificProduct = async (req: Request, res: Response) => {
 // new order
 const orderProduct = async (req: Request, res: Response) => {
   const order = req.body;
-  const result = await productService.addOrder(order);
+  const zodPrsedData = ProductOrderValidationSchema.parse(order);
+  const result = await productService.addOrder(zodPrsedData);
   res.status(200).json({
     success: true,
     message: 'Order created successfully!',
