@@ -2,7 +2,6 @@
 import { IProduct, IProductOrder } from './product.interface';
 import { Order, Product } from './product.model';
 
-
 const creatProductIntoDB = async (product: IProduct) => {
   const result = await Product.create(product);
   return result;
@@ -48,23 +47,19 @@ const deleteSpecificProductIntoDB = async (productId: string) => {
   return result;
 };
 
-
-// new order 
-const addOrder = async(order:IProductOrder) =>{
-const result = await Order.create(order)
- return result
-}
+// new order
+const addOrder = async (order: IProductOrder) => {
+  const result = await Order.create(order);
+  return result;
+};
 // Retrieve All Orders and
-const retrieveAllOrdersIntoDB = async (email:string) => {
-  // const result = await Product.find();
-  //   return result;
-
+const retrieveAllOrdersIntoDB = async (email?: string) => {
   if (email) {
-    const query = {email};
-    const result = await Product.find(query);
+    const query = { email };
+    const result = await Order.find(query);
     return result;
   } else {
-    const result = await Product.find();
+    const result = await Order.find();
     return result;
   }
 };
@@ -75,5 +70,5 @@ export const productService = {
   updateSpecificProductIntoDB,
   deleteSpecificProductIntoDB,
   addOrder,
-  retrieveAllOrdersIntoDB
+  retrieveAllOrdersIntoDB,
 };

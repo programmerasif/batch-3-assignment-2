@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
 import { productService } from './product.services';
-import { Order } from './product.model';
 
 // creat produce
 const creatProduct = async (req: Request, res: Response) => {
   try {
     const product = req.body;
-    
 
     //  here we call the services function
     const result = await productService.creatProductIntoDB(product);
@@ -102,25 +100,37 @@ const deleteSpecificProduct = async (req: Request, res: Response) => {
   }
 };
 
-// new order 
-const orderProduct = async(req:Request, res:Response) =>{
-  const order = req.body
-  const result = await productService.addOrder(order)
+// new order
+const orderProduct = async (req: Request, res: Response) => {
+  const order = req.body;
+  const result = await productService.addOrder(order);
   res.status(200).json({
     success: true,
     message: 'Order created successfully!',
     data: result,
   });
-}
+};
 // Retrieve All Orders
 const retrieveAllOrders = async (req: Request, res: Response) => {
+  const email = req.query.email;
   try {
-    const result = await productService.retrieveAllOrdersIntoDB();
+    if (email) {
+      const result = await productService.retrieveAllOrdersIntoDB(
+        email as string,
+      );
       res.status(200).json({
         success: true,
-        message: 'Orders fetched successfully!',
+        message: 'Orders fetched successfully for user email!',
         data: result,
       });
+    } else {
+      const result = await productService.retrieveAllOrdersIntoDB();
+      res.status(200).json({
+        success: true,
+        message: 'Order fetched successfully!',
+        data: result,
+      });
+    }
   } catch (error) {
     const errMsg = (error as Error).message || 'Unknown error occurred';
     // sending error response
@@ -138,5 +148,5 @@ export const productControlars = {
   updateSpecificProduct,
   deleteSpecificProduct,
   orderProduct,
-  retrieveAllOrders
+  retrieveAllOrders,
 };
