@@ -52,11 +52,11 @@ const addOrder = async (order: IProductOrder,productId:string) => {
 
   const product = await Product.findOne({_id : productId})
   if (!product) {
-    throw new Error("Product not Found")
+    throw new Error("Order not found")
   }
 
   if (product.inventory.quantity < order.quantity) {
-    throw new Error("Quantity is not available in inventory")
+    throw new Error("Insufficient quantity available in inventory")
   }
 // Update the product inventory quantity
   product.inventory.quantity -= order.quantity;
