@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { productService } from './product.services';
-import { ProductOrderValidationSchema, ProductValidationSchema, stringValidationSchema } from './product.validation';
+import { ProductOrderValidationSchema, ProductValidationSchema } from './product.validation';
 // creat produce
 const creatProduct = async (req: Request, res: Response) => {
   try {
@@ -107,16 +107,17 @@ const deleteSpecificProduct = async (req: Request, res: Response) => {
 const orderProduct = async (req: Request, res: Response) => {
   const order = req.body;
   const zodPrsedData = ProductOrderValidationSchema.parse(order);
-  const result = await productService.addOrder(zodPrsedData);
+  const result = await productService.addOrder(zodPrsedData,zodPrsedData.productId);
   res.status(200).json({
     success: true,
     message: 'Order created successfully!',
     data: result,
   });
 };
-// Retrieve All Orders
-const retrieveAllOrders = async (req: Request, res: Response) => {
+// Retrieve specfic Orders by email
+const retrieveSpecficOrders = async (req: Request, res: Response) => {
   const email = req.query.email;
+  
   try {
     if (email) {
       const result = await productService.retrieveAllOrdersIntoDB(
@@ -152,5 +153,5 @@ export const productControlars = {
   updateSpecificProduct,
   deleteSpecificProduct,
   orderProduct,
-  retrieveAllOrders,
+  retrieveSpecficOrders,
 };

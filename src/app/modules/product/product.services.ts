@@ -48,7 +48,23 @@ const deleteSpecificProductIntoDB = async (productId: string) => {
 };
 
 // new order
-const addOrder = async (order: IProductOrder) => {
+const addOrder = async (order: IProductOrder,productId:string) => {
+
+  const product = await Product.findOne({_id : productId})
+  if (!product) {
+    throw new Error("Product not Found")
+  }
+
+  if (product.inventory.quantity < order.quantity) {
+    throw new Error("Quantity is not available in inventory")
+  }
+// Update the product inventory quantity
+  product.inventory.quantity -= order.quantity;
+
+  if (product.inventory.quantity == 0) {
+    product.inventory.inStock = false
+  }
+  await product.save()
   const result = await Order.create(order);
   return result;
 };

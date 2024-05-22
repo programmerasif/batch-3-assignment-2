@@ -12,5 +12,5 @@ router.delete('/products/:productId', productControlars.deleteSpecificProduct);
 
 // orders rout 
 router.post('/orders', productControlars.orderProduct);
-router.get('/orders', productControlars.retrieveAllOrders);
+router.get('/orders', productControlars.retrieveSpecficOrders);
 export const productRoutes = router;
