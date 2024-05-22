@@ -15,5 +15,11 @@ app.use('/api', OrderRouts);
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
+app.use((req, res) => {
+  res.status(404).json({
+      success: false,
+      message: "Route not found"
+  });
+});
 
 export default app;
