@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { productService } from './product.services';
-import Product from './product.model';
+import { Order } from './product.model';
 
 // creat produce
 const creatProduct = async (req: Request, res: Response) => {
   try {
     const product = req.body;
-    console.log(product);
+    
 
     //  here we call the services function
     const result = await productService.creatProductIntoDB(product);
@@ -102,10 +102,41 @@ const deleteSpecificProduct = async (req: Request, res: Response) => {
   }
 };
 
+// new order 
+const orderProduct = async(req:Request, res:Response) =>{
+  const order = req.body
+  const result = await productService.addOrder(order)
+  res.status(200).json({
+    success: true,
+    message: 'Order created successfully!',
+    data: result,
+  });
+}
+// Retrieve All Orders
+const retrieveAllOrders = async (req: Request, res: Response) => {
+  try {
+    const result = await productService.retrieveAllOrdersIntoDB();
+      res.status(200).json({
+        success: true,
+        message: 'Orders fetched successfully!',
+        data: result,
+      });
+  } catch (error) {
+    const errMsg = (error as Error).message || 'Unknown error occurred';
+    // sending error response
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while creating the order',
+      error: errMsg,
+    });
+  }
+};
 export const productControlars = {
   creatProduct,
   getAllProduct,
   getSpecificProduct,
   updateSpecificProduct,
   deleteSpecificProduct,
+  orderProduct,
+  retrieveAllOrders
 };

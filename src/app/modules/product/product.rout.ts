@@ -10,4 +10,7 @@ router.get('/products/:productId', productControlars.getSpecificProduct);
 router.put('/products/:productId', productControlars.updateSpecificProduct);
 router.delete('/products/:productId', productControlars.deleteSpecificProduct);
 
+// orders rout 
+router.post('/orders', productControlars.orderProduct);
+router.get('/orders', productControlars.retrieveAllOrders);
 export const productRoutes = router;

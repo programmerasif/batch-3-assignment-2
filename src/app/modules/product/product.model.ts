@@ -1,6 +1,6 @@
 // model
 import mongoose, { Schema } from 'mongoose';
-import { IProduct } from './product.interface';
+import { IProduct, IProductOrder } from './product.interface';
 
 const VariantSchema = new Schema({
   type: { type: String, required: true },
@@ -13,12 +13,41 @@ const InventorySchema = new Schema({
 });
 
 // main product schema
-const ProductSchema = new Schema<IProduct>({
-  name: {
+const ProductSchema = new Schema<IProduct>(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    tags: { type: [String], required: true },
+    variants: { type: [VariantSchema], required: true },
+    inventory: { type: InventorySchema, required: true },
+  },
+  {
+    versionKey: false,
+  }
+);
+
+//  order schema
+
+const productOrderSchema = new Schema<IProductOrder>({
+  email: {
     type: String,
     required: true,
   },
-  description: {
+  productId: {
     type: String,
     required: true,
   },
@@ -26,17 +55,18 @@ const ProductSchema = new Schema<IProduct>({
     type: Number,
     required: true,
   },
-  category: {
-    type: String,
+  quantity: {
+    type: Number,
     required: true,
   },
-  tags: { type: [String], required: true },
-  variants: { type: [VariantSchema], required: true },
-  inventory: { type: InventorySchema, required: true },
-}, 
+},
 {
-  versionKey: false // Disable the __v field
-});
+  versionKey: false, // Disable the __v field
+},
+);
 
-const Product = mongoose.model<IProduct>('Product',ProductSchema)
-export default Product
+
+const Product = mongoose.model<IProduct>('Product', ProductSchema);
+const Order = mongoose.model<IProductOrder>('Productorde',productOrderSchema)
+
+export  {Product,Order};

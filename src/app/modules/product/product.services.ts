@@ -1,6 +1,7 @@
 // service
-import { IProduct } from './product.interface';
-import Product from './product.model';
+import { IProduct, IProductOrder } from './product.interface';
+import { Order, Product } from './product.model';
+
 
 const creatProductIntoDB = async (product: IProduct) => {
   const result = await Product.create(product);
@@ -47,10 +48,32 @@ const deleteSpecificProductIntoDB = async (productId: string) => {
   return result;
 };
 
+
+// new order 
+const addOrder = async(order:IProductOrder) =>{
+const result = await Order.create(order)
+ return result
+}
+// Retrieve All Orders and
+const retrieveAllOrdersIntoDB = async (email:string) => {
+  // const result = await Product.find();
+  //   return result;
+
+  if (email) {
+    const query = {email};
+    const result = await Product.find(query);
+    return result;
+  } else {
+    const result = await Product.find();
+    return result;
+  }
+};
 export const productService = {
   creatProductIntoDB,
   getAllProductIntoDB,
   getSpecificProductIntoDB,
   updateSpecificProductIntoDB,
   deleteSpecificProductIntoDB,
+  addOrder,
+  retrieveAllOrdersIntoDB
 };
